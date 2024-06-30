@@ -1,0 +1,44 @@
+import os
+import string
+
+class StringListManager:
+    def __init__(self, input_data):
+        if isinstance(input_data, str):
+            self.data = [input_data]
+        elif isinstance(input_data, list):
+            if self._check_all_strings(input_data):
+                self.data = input_data
+            else:
+                raise TypeError("All elements in the list must be strings")
+        else:
+            raise TypeError("Input must be either a string or a list of strings")
+
+    def _check_all_strings(self, input_list):
+        return all(isinstance(item, str) for item in input_list)
+
+    def append(self, item):
+        if not isinstance(item, str):
+            raise TypeError("Appended item must be a string")
+        if not all(ord(char) < 128 for char in item):
+            raise ValueError("Appended string must be ASCII-compliant")
+        if any(char in string.punctuation for char in item):
+            raise ValueError("Appended string cannot contain punctuation characters")
+        self.data.append(item)
+
+    def output_to_file(self, filename):
+        with open(filename, 'w') as f:
+            for item in self.data:
+                f.write(item + '\n')
+
+# Example usage:
+if __name__ == "__main__":
+    try:
+        input_data = input("Enter a string or a list of strings: ")
+        manager = StringListManager(input_data)
+        manager.append("New string")
+        manager.output_to_file("output.txt")
+        print("Data successfully processed and written to output.txt")
+    except (TypeError, ValueError) as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
