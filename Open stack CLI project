@@ -1,0 +1,49 @@
+To perform the tasks using the OpenStack CLI client (not using Horizon), follow these steps to create a project, user, assign the user to the project, and simulate logging in as the user Mike:
+
+### Step 1: Create a Project by Name "cloud works"
+
+1. **Authenticate to OpenStack:**
+   ```bash
+   $ source <path_to_openstack_rc_file>
+   ```
+   Replace `<path_to_openstack_rc_file>` with the path to your OpenStack RC file containing authentication credentials.
+
+2. **Create the Project:**
+   ```bash
+   $ openstack project create --description "Cloud Works Project" cloud-works
+   ```
+   This command creates a project named `cloud-works` with the description "Cloud Works Project".
+
+### Step 2: Create a User by Name "Mike"
+
+1. **Generate Password for User (optional):**
+   If needed, generate a password for the user Mike. You can store it securely or provide it directly to Mike.
+   ```bash
+   $ openstack user create --password-prompt mike
+   ```
+   Enter a password when prompted.
+
+2. **Create the User:**
+   ```bash
+   $ openstack user create --project cloud-works --password <mike_password> mike
+   ```
+   Replace `<mike_password>` with the password you generated or set for the user Mike. This command creates a user named `mike` and assigns them to the `cloud-works` project.
+
+### Step 3: Add User Mike to the "cloud works" Project
+
+1. **Assign Role to User:**
+   ```bash
+   $ openstack role add --project cloud-works --user mike _member_
+   ```
+   This command assigns the `_member_` role to the user Mike within the `cloud-works` project. The `_member_` role typically grants basic access rights to the project.
+
+### Step 4: Login as Mike Using Horizon Portal
+
+Since Horizon is not to be used directly via CLI for user login simulation, you would need to provide the login details (username and password) to Mike and instruct them on how to access the Horizon portal:
+
+- **Horizon URL:** Provide Mike with the URL to access the Horizon dashboard. Typically, it's `http://<openstack_dashboard_ip>/dashboard`.
+- **Credentials:** Provide Mike with their username (`mike`) and the password you set or generated for them.
+
+### Conclusion
+
+By following these steps, you have successfully created a project named `cloud-works`, created a user named `mike`, added Mike to the `cloud-works` project, and instructed how to log in to the Horizon portal using Mike's credentials. Ensure to securely manage passwords and credentials as per your organization's security policies.
