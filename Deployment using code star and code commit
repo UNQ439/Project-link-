@@ -1,0 +1,83 @@
+### Manual Approach: Deploying ASP.NET Core Application to IIS
+
+1. **Create ASP.NET Core Web Application:**
+   - Develop an ASP.NET Core web application using Visual Studio or Visual Studio Code.
+
+2. **Deploy to IIS:**
+   - Publish the ASP.NET Core application to a local folder or directly to IIS using Visual Studio's publish wizard or command-line tools.
+
+3. **Set Title of Web Application:**
+   - Ensure the application displays "Welcome to Manual Deployment" as the title.
+
+4. **Apply Code Change:**
+   - Modify the source code to change the title to "Applying DevOps to Speed Up Application Delivery".
+   - Republish or redeploy the application to reflect the code change in IIS.
+
+### Automated Approach: Using AWS CodeStar for CI/CD Pipeline
+
+1. **Create ASP.NET Core Web Application with AWS CodeStar:**
+   - Use AWS CodeStar to create a new ASP.NET Core web application project integrated with AWS services.
+
+2. **Code Repository - AWS CodeCommit:**
+   - Store the application code securely in AWS CodeCommit, AWS's managed Git repository service.
+
+3. **Automated Build - AWS CodeBuild:**
+   - Configure AWS CodeBuild to automatically build the ASP.NET Core application upon code commit.
+   - Use build specifications (buildspec.yml) to define build steps and dependencies.
+
+   Example `buildspec.yml`:
+   ```yaml
+   version: 0.2
+   phases:
+     install:
+       runtime-versions:
+         dotnet: 3.1
+     build:
+       commands:
+         - dotnet restore
+         - dotnet build -c Release
+         - dotnet publish -c Release -o ./publish_output
+   artifacts:
+     files:
+       - '**/*'
+     base-directory: './publish_output'
+   ```
+
+4. **Automated Deployment - AWS CodeDeploy:**
+   - Set up AWS CodeDeploy to deploy the built ASP.NET Core application package (from CodeBuild output) to an AWS EC2 instance.
+   - Define deployment configurations and hooks to manage deployment lifecycle and validation.
+
+### Benefits and Impact of Moving from Manual to Automated CI/CD Pipeline
+
+#### Benefits:
+
+1. **Speed and Efficiency:**
+   - **Manual Approach:** Deployment and code changes are time-consuming and error-prone.
+   - **Automated Approach:** Streamlined CI/CD pipeline accelerates build, test, and deployment processes, reducing time to market.
+
+2. **Consistency and Reliability:**
+   - **Manual Approach:** Deployment configurations may vary, leading to inconsistencies.
+   - **Automated Approach:** Standardized deployment processes ensure consistent and reliable deployments across environments.
+
+3. **Scalability:**
+   - **Manual Approach:** Scaling deployment manually is complex and resource-intensive.
+   - **Automated Approach:** Easily scale deployments with automated tools like AWS CodeDeploy, supporting continuous growth and demand.
+
+4. **Visibility and Control:**
+   - **Automated Approach:** Detailed logs, monitoring, and rollback capabilities in AWS CodePipeline and related services provide visibility and control over the deployment pipeline.
+
+#### Impact:
+
+1. **Enhanced Development Agility:**
+   - Developers can focus more on writing code and less on deployment tasks, fostering agility and innovation.
+
+2. **Reduced Risk and Improved Quality:**
+   - Automated testing and deployment reduce human errors, improving application quality and reliability.
+
+3. **Cost Efficiency:**
+   - Efficient use of resources and reduced downtime translate to cost savings in operations and maintenance.
+
+4. **Compliance and Security:**
+   - Automated pipelines facilitate adherence to compliance standards and security best practices through consistent deployment processes.
+
+In conclusion, moving from a manual deployment approach to a fully automated CI/CD pipeline with AWS CodeStar brings significant advantages in terms of speed, efficiency, consistency, and scalability. It transforms software delivery into a streamlined, repeatable process that enhances agility, reduces risk, improves quality, and ultimately supports continuous improvement and innovation in application development and deployment.
