@@ -1,0 +1,65 @@
+To accomplish the assignment requirements effectively, we'll break down the tasks into logical steps and configurations across AWS IAM (Identity and Access Management) for roles and groups, and Kubernetes RBAC (Role-Based Access Control) for defining access within namespaces.
+
+### AWS IAM Setup
+
+1. **Create IAM Roles and Groups:**
+
+   - **Admin Role:**
+     - Create an IAM Role with Administrator permissions for Kubernetes cluster management.
+     - Assign this role to an IAM Group named `admin`.
+
+   - **Developers Role:**
+     - Create an IAM Role with permissions limited to the `developers` namespace of the Kubernetes cluster.
+     - Assign this role to an IAM Group named `developers`.
+
+   - **Testers Role:**
+     - Create an IAM Role with permissions limited to the `testing` namespace of the Kubernetes cluster.
+     - Assign this role to an IAM Group named `testers`.
+
+2. **Create IAM Users and Assign to Groups:**
+
+   - **James, Robert, Michael:**
+     - Create IAM users `James`, `Robert`, and `Michael`.
+     - Assign `James` to the `admin` group.
+     - Assign `Robert` to the `developers` group.
+     - Assign `Michael` to the `testers` group.
+
+### Kubernetes RBAC Setup
+
+3. **Create Namespaces:**
+
+   - As an admin, create three namespaces:
+     - `admin`
+     - `development`
+     - `testing`
+
+4. **Define Roles and Role Bindings:**
+
+   - **Admin Role:**
+     - Create a ClusterRole or Role (depending on scope) named `admin-role` with full admin rights (`system:masters`).
+     - Bind this role to the IAM Group `admin`.
+
+   - **Developers Role:**
+     - Create a Role named `developer-role` in the `development` namespace with appropriate permissions (e.g., pod create, list).
+     - Bind this role to the IAM Group `developers` and specifically to user `Robert` within the `development` namespace.
+
+   - **Testers Role:**
+     - Create a Role named `tester-role` in the `testing` namespace with appropriate permissions (e.g., pod create, list).
+     - Bind this role to the IAM Group `testers` and specifically to user `Michael` within the `testing` namespace.
+
+### Verification Steps
+
+5. **Testing the Setup:**
+
+   - **Admin Verification:**
+     - Create an Nginx pod in the `development` namespace.
+     - Ensure that as `Robert` (developer), you can list and access pods only within the `development` namespace.
+
+   - **Developer Verification:**
+     - As `Robert`, attempt to access pods in namespaces other than `development`. Verify access is restricted.
+
+   - **Tester Verification:**
+     - As `Michael`, create an Nginx pod in the `testing` namespace.
+     - Ensure that you can list and access pods only within the `testing` namespace.
+
+By following these steps, you'll establish a clear role-based access control (RBAC) mechanism where IAM roles and groups in AWS control access to specific namespaces and resources within Kubernetes. This setup ensures that users only have the necessary permissions based on their roles and namespaces, fulfilling the assignment requirements effectively.
