@@ -1,0 +1,53 @@
+Based on the requirements outlined for Eduonix Corp, here’s a high-level plan for the Azure architecture:
+
+### Architecture Overview
+
+1. **Intranet Website**
+   - **Azure Virtual Network (VNet)**: Create a VNet in Azure to host resources.
+   - **Azure App Service Environment (ASE)**: Deploy the Intranet site using Azure App Service Environment for secure network isolation and to restrict access to only the internal network.
+   - **Azure VPN Gateway**: Establish a VPN connection between Azure and the office in Florida to ensure secure access to the Intranet site from the local network.
+
+2. **Internet Website (PaaS Web App)**
+   - **Azure App Service**: Deploy the Internet site as a PaaS Web App using Azure App Service. This allows scalability and minimizes server management.
+   - **Auto-scaling**: Configure auto-scaling based on metrics (like CPU usage or requests) to handle seasonal spikes in traffic effectively.
+
+3. **Fileshare**
+   - **Azure Files**: Host a fileshare using Azure Files, which provides fully managed file shares in the cloud accessible via the SMB protocol. This can be accessed by users from the Florida office securely over the Azure VPN.
+
+### Detailed Steps
+
+1. **Network Configuration:**
+   - Create an Azure Virtual Network (VNet).
+   - Configure subnets within the VNet:
+     - Subnet for the App Service Environment (ASE).
+     - Subnet for the Azure Files service.
+
+2. **Intranet Website Setup:**
+   - Create an Azure App Service Environment (ASE).
+   - Deploy the Intranet site to the ASE.
+   - Configure the ASE to allow access only from within the VNet and over the VPN from the Florida office.
+   - Configure Azure VPN Gateway to establish a secure VPN connection with the on-premises network in Florida.
+
+3. **Internet Website Setup:**
+   - Create an Azure App Service Plan and Web App for the Internet site.
+   - Configure auto-scaling rules based on traffic patterns to handle increased load during peak times.
+   - Optionally, integrate with Azure Front Door or Azure CDN for global scale and performance.
+
+4. **Fileshare Setup:**
+   - Create an Azure File share within the designated subnet.
+   - Configure access controls to restrict access to users from the Florida office.
+   - Mount the Azure File share on user devices in the Florida office using Azure Files SMB access.
+
+### Security Considerations
+
+- **Network Security:** Ensure proper network segmentation using VNets and subnets. Use Network Security Groups (NSGs) to control traffic flow.
+- **Data Protection:** Encrypt data at rest and in transit using Azure encryption capabilities and HTTPS for web traffic.
+- **Identity and Access Management:** Use Azure Active Directory for user authentication and RBAC (Role-Based Access Control) for resource access management.
+- **Compliance and Governance:** Implement Azure Policy and Azure Security Center for compliance monitoring and governance.
+
+### Monitoring and Management
+
+- **Azure Monitor:** Set up monitoring for all resources to track performance, detect issues, and ensure availability.
+- **Azure Cost Management:** Monitor and optimize costs by using Azure Cost Management to track spending and identify cost-saving opportunities.
+
+By following this architecture, Eduonix Corp can leverage Azure’s scalability and manageability while meeting their specific requirements for both Intranet and Internet websites, as well as file sharing. Adjustments may be needed based on specific application requirements and anticipated traffic patterns.
