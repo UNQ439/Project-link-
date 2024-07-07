@@ -1,1 +1,74 @@
 
+To migrate data from Microsoft SQL Server running on an Amazon EC2 instance to an Amazon S3 bucket using AWS Database Migration Service (DMS), and to continually replicate database changes, follow these steps:
+
+### 1. Prerequisites
+
+1. **AWS Account:**
+   - Ensure you have an AWS account with appropriate permissions to create and manage resources like EC2 instances, S3 buckets, and DMS.
+
+2. **Microsoft SQL Server on EC2:**
+   - Have a Microsoft SQL Server instance running on an EC2 instance. Make sure the instance is accessible from the network and has necessary ports open (1433 by default for SQL Server).
+
+3. **EC2 Key Pairs:**
+   - Have EC2 key pairs configured to SSH into the EC2 instance hosting SQL Server, if needed for setup or troubleshooting.
+
+4. **Sample Database:**
+   - Prepare a sample database running on SQL Server that you intend to migrate to Amazon S3.
+
+5. **AWS Schema Conversion Tool (AWS SCT):**
+   - Download and install AWS Schema Conversion Tool (AWS SCT) on a local machine. This tool helps in converting schema from SQL Server to compatible formats for AWS services.
+
+6. **AWS S3 Bucket:**
+   - Create an Amazon S3 bucket where the migrated data will be stored.
+
+### 2. Setup and Configuration
+
+#### Step 1: Prepare AWS DMS Environment
+
+1. **Create a Replication Instance:**
+   - Go to AWS DMS console.
+   - Create a new replication instance. This instance manages the replication tasks and connects to your source (SQL Server) and target (S3 bucket).
+
+2. **Create IAM Roles:**
+   - Create an IAM role for DMS service linked to S3. This role allows DMS to access and write data to the S3 bucket.
+
+#### Step 2: Configure Database Endpoints
+
+1. **Source Endpoint (SQL Server):**
+   - Define the source endpoint in DMS for your SQL Server instance running on EC2.
+   - Provide connection details including endpoint URL, port (1433), username, password, and database name.
+
+2. **Target Endpoint (Amazon S3):**
+   - Define the target endpoint in DMS for your Amazon S3 bucket.
+   - Specify the S3 bucket name, IAM role ARN created for DMS access, and optionally a prefix (folder) within the bucket to store data.
+
+#### Step 3: Create and Configure Migration Task
+
+1. **Create a Migration Task:**
+   - Set up a new migration task in DMS to migrate data from SQL Server to S3 and enable ongoing replication.
+   - Define table mappings, replication settings (CDC - Change Data Capture), and task settings (e.g., migration type, replication instance).
+
+2. **Start and Monitor Migration:**
+   - Start the migration task in DMS.
+   - Monitor the progress and logs in the DMS console to ensure data migration is proceeding as expected.
+
+### 3. AWS SCT for Schema Conversion (Optional)
+
+1. **Convert Schema (If Needed):**
+   - Use AWS SCT to convert schema objects from SQL Server to compatible formats for Amazon S3 or other AWS services, if required.
+
+### 4. Post-Migration Verification
+
+1. **Verify Data in S3:**
+   - Once migration is complete, verify the data in the Amazon S3 bucket specified during setup.
+   - Ensure data integrity and completeness by checking sample records or using validation queries.
+
+### 5. Clean Up
+
+1. **Shutdown Resources:**
+   - Stop the migration task in AWS DMS once verified.
+   - Optionally, delete the replication instance and IAM roles if no longer needed.
+
+### Conclusion
+
+By following these steps, you can successfully migrate data from Microsoft SQL Server running on an Amazon EC2 instance to an Amazon S3 bucket using AWS Database Migration Service (DMS). This approach ensures data integrity, minimizes downtime, and facilitates ongoing replication for real-time data updates. Adjust configurations based on your specific requirements and perform thorough testing and validation to ensure a successful migration.
