@@ -1,0 +1,69 @@
+To complete the assignment of hosting a static website on AWS using S3, integrating it with CloudFront CDN, and setting up a custom domain with Route 53, follow these steps:
+
+### 1. Configure Static Website Hosting on Amazon S3
+
+1. **Create an S3 Bucket:**
+   - Log in to your AWS Management Console.
+   - Go to S3 service.
+   - Click on **Create bucket**.
+   - Enter a unique bucket name (e.g., `example.com`) and choose a region.
+   - Keep all other settings as default and click **Create bucket**.
+
+2. **Upload Website Files:**
+   - Select the bucket you just created.
+   - Click on **Upload**.
+   - Upload your HTML, CSS, JavaScript files, and any other assets (images, etc.) that make up your static website.
+   - Make sure to set the appropriate permissions (`Public` or `Bucket Policy` allowing public access) for your files.
+
+3. **Enable Static Website Hosting:**
+   - In the S3 bucket properties, navigate to the **Static website hosting** card.
+   - Choose **Use this bucket to host a website**.
+   - Set the `Index document` (e.g., `index.html`) and optionally, the `Error document`.
+   - Save the changes.
+
+4. **Verify Website Hosting:**
+   - Access the endpoint URL provided in the Static website hosting card to verify your website is accessible.
+
+### 2. Configure Static Website with CloudFront Distribution
+
+1. **Create a CloudFront Distribution:**
+   - Go to CloudFront service in AWS Management Console.
+   - Click on **Create Distribution**.
+   - Choose **Web** distribution type.
+   - In the `Origin Domain Name`, select the S3 bucket endpoint created earlier.
+   - Configure other settings like caching behavior, origin settings, etc., as per your requirements.
+   - Click **Create Distribution**.
+
+2. **Wait for CloudFront Distribution Deployment:**
+   - It may take several minutes for the CloudFront distribution to deploy fully. Wait until the status changes to `Deployed`.
+
+3. **Access Website via CloudFront URL:**
+   - Once deployed, you'll get a CloudFront domain name (e.g., `d12345abcdef.cloudfront.net`).
+   - Access your website using this CloudFront domain name to verify it's working through CloudFront.
+
+### 3. Integrating Route 53 with CloudFront CDN
+
+1. **Create a Route 53 Hosted Zone:**
+   - Go to Route 53 service in AWS Management Console.
+   - Click on **Hosted zones** and then **Create Hosted Zone**.
+   - Enter your domain name (e.g., `example.com`) and click **Create**.
+
+2. **Create a Record Set for Your Domain:**
+   - Inside your hosted zone, click on **Create Record Set**.
+   - Leave the `Name` blank to indicate the root domain (`example.com`).
+   - Choose `Alias` as the type and select your CloudFront distribution from the dropdown list.
+   - Save the record set.
+
+3. **Update DNS Nameservers (if using a new domain):**
+   - If you are using a new domain registered outside AWS, update the domain's DNS nameservers to the ones provided by Route 53 in the hosted zone.
+
+4. **Verify Custom Domain:**
+   - Wait for DNS changes to propagate (this can take some time depending on TTL settings).
+   - Once propagated, access your website using your custom domain name (e.g., `http://www.example.com`) to verify it's working with CloudFront.
+
+### Final Checks
+
+- Ensure all permissions are correctly set in S3 and CloudFront to allow public access to your website content.
+- Test the website's performance and verify that it's accessible via both the CloudFront domain and your custom domain.
+
+By following these steps, you'll successfully host your static website on AWS S3, integrate it with CloudFront CDN for improved performance, and use Route 53 to map a custom domain name to your CloudFront distribution. This setup ensures your website is secure, scalable, and performs well globally.
